@@ -37,7 +37,7 @@ def get_map_url(walk_data):
     for dest in walk_data["destinations"]:
         markers.append("color:purple|label:{}|{}".format(dest["name"][0], dest["address"]))
     params = {"size": "640x640", "markers": markers}
-    url = "https://maps.googleapis.com/maps/api/staticmap?{}".format(urllib.parse.urlencode(params, True))
+    url = "https://maps.googleapis.com/maps/api/staticmap?{}".format(urllib.urlencode(params, True))
     print(url)
     return url
 
@@ -86,7 +86,7 @@ class TravelView():
     def get(self):
         url = self.make_request()
         print(url)
-        response = urllib.request.urlopen(url)
+        response = urllib.urlopen(url)
         data = json.loads(response.read())
         parsed_data = self.parse(data)
         return parsed_data
@@ -94,7 +94,7 @@ class TravelView():
     def make_request(self):
         params = {"units": "imperial", "origins": self.origin, "destinations": self.encode_destinations(), "mode": self.mode,
                 "departure_time": self.next_tuesday_morning(), "key": "AIzaSyBJCmkrZ8oWgl-v-0yOBoFiABrMXDULg2I"}
-        request_url = "https://maps.googleapis.com/maps/api/distancematrix/json?{}".format(urllib.parse.urlencode(params))
+        request_url = "https://maps.googleapis.com/maps/api/distancematrix/json?{}".format(urllib.urlencode(params))
         return request_url
 
     def parse(self, data):
