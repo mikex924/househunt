@@ -36,7 +36,7 @@ def get_map_url(walk_data):
     markers.append("color:red|{}".format(walk_data["origin"]))
     for dest in walk_data["destinations"]:
         markers.append("color:purple|label:{}|{}".format(dest["name"][0], dest["address"]))
-    params = {"size": "640x640", "markers": markers}
+    params = {"size": "640x640", "markers": markers, "key": "AIzaSyCDXB6GxSODpBZxQi8V4lgIBzga37C4Mvw"}
     url = "https://maps.googleapis.com/maps/api/staticmap?{}".format(urllib.urlencode(params, True))
     print(url)
     return url
