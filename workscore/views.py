@@ -27,7 +27,11 @@ def score(request):
     walk_data = TravelView(origin, destinations, "walking").get()
     bike_data = TravelView(origin, destinations, "bicycling").get()
     transit_data = TravelView(origin, destinations, "transit").get()
-    merged_data = merge_data(walk_data, bike_data, transit_data)
+    car_destinations = []
+    car_destinations.append(("Ocean Beach", "2814 Great Hwy, San Francisco, CA 94132"))
+    car_destinations.append(("Linda Mar", "5000 Pacific Coast Hwy, Pacifica, CA 94044"))
+    car_data = TravelView(origin, car_destinations, "driving").get()
+    merged_data = merge_data(walk_data, bike_data, transit_data, car_data)
     map_url = get_map_url(walk_data)
     return render(request, "score.html", context={"data": merged_data, "map_url": map_url})
 
@@ -41,7 +45,7 @@ def get_map_url(walk_data):
     print(url)
     return url
 
-def merge_data(walk_data, bike_data, transit_data):
+def merge_data(walk_data, bike_data, transit_data, car_data):
     output = {}
     output["origin"] = walk_data["origin"]
     output["destinations"] = []
@@ -65,6 +69,16 @@ def merge_data(walk_data, bike_data, transit_data):
         destination["transit"]["duration"] = t_data["duration"]
         destination["transit"]["class"] = get_duration_class(t_data["duration_sec"], 25, 35)
         output["destinations"].append(destination)
+    output["car_destinations"] = []
+    for i in range(0, len(car_data["destinations"])):
+        destination = {}
+        c_data = car_data["destinations"][i]
+        destination["name"] = c_data["name"]
+        destination["address"] = c_data["address"]
+        destination["distance"] = c_data["distance"]
+        destination["duration"] = c_data["duration"]
+        destination["class"] = get_duration_class(c_data["duration_sec"], 25, 45)
+        output["car_destinations"].append(destination)
     return output
 
 def get_duration_class(duration_sec, thresh_1, thresh_2):

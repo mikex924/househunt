@@ -71,6 +71,25 @@
                         {% endfor %}
                     </tbody>
                 </table>
+                <div class="pure-u-1"></div>
+                <table class="pure-table">
+                    <thead>
+                        <tr>
+                            <th><i class="material-icons">place</i></th>
+                            <th><i class="material-icons">directions_car</i></th>
+                            <th><i class="material-icons">map</i></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for dest in data.car_destinations %}
+                        <tr>
+                            <td>{{dest.name}}</td>
+                            <td><font class="{{dest.class}}">{{dest.duration}}</font><font class="distance"> / {{dest.distance}}</font></td>
+                            <td>{{dest.address}}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
             </div>
             <div class="pure-u-5-12">
                 <p><img src="{{map_url}}"></p>
